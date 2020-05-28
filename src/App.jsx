@@ -33,8 +33,35 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
+
 export default function App() {
   const classes = useStyles();
+  const [validated, setValidated] = React.useState(false);
+
+  const handleValidation = (e) => {
+    const val = e.target.value;
+  
+    if (val.length < 5) {
+      setValidated(false);
+    } else {
+      setValidated(true);
+      return;
+    }
+  };
+
+  const handleSubmit = () => {
+    
+  }
+
+  const button = validated ? (
+    <Button onClick={handleSubmit} color="primary">
+      投稿
+    </Button>
+  ) : (
+    <Button disabled color="primary">
+        投稿
+      </Button>
+  );
 
   return (
     <div>
@@ -67,12 +94,10 @@ export default function App() {
               label="Message"
               multiline
               rows={4}
-              defaultValue="Default Value"
               variant="outlined"
+              onChange={handleValidation}
             />
-            <Button variant="contained" color="primary">
-              投稿
-            </Button>
+            {button}
           </form>
         </div>
       </div>
