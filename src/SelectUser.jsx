@@ -5,6 +5,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import InputBase from '@material-ui/core/InputBase';
+import Avatar from '@material-ui/core/Avatar';
 
 const BootstrapInput = withStyles((theme) => ({
   root: {
@@ -45,33 +46,49 @@ const useStyles = makeStyles((theme) => ({
   margin: {
     margin: theme.spacing(1),
   },
+  large: {
+    width: theme.spacing(7),
+    height: theme.spacing(7),
+  },
+  root: {
+    display: 'flex',
+    '& > *': {
+      margin: theme.spacing(1),
+    },
+  },
 }));
 
-export default function CustomizedSelects() {
+export default function CustomizedSelects(props) {
   const classes = useStyles();
-  const [age, setAge] = React.useState('');
+  const [avatar, setAvatar] = React.useState('michel');
+
   const handleChange = (event) => {
-    setAge(event.target.value);
+    const name = event.target.value;
+    setAvatar(name);
+    props.onSet(name);
   };
+
   return (
     <div>
-      <FormControl className={classes.margin}>
-        <InputLabel id="demo-customized-select-label">User</InputLabel>
-        <Select
-          labelId="demo-customized-select-label"
-          id="demo-customized-select"
-          value={age}
-          onChange={handleChange}
-          input={<BootstrapInput />}
-        >
-          <MenuItem value="">
-            <em>None</em>
-          </MenuItem>
-          <MenuItem value={10}>Michel</MenuItem>
-          <MenuItem value={20}>Mike</MenuItem>
-          <MenuItem value={30}>Shelly</MenuItem>
-        </Select>
-      </FormControl>
+      <div className={classes.root}>
+        <Avatar alt="Remy Sharp" src={`/static/images/avatar/${avatar}.png`} className={classes.large} />
+      </div>
+      <div>
+        <FormControl className={classes.margin}>
+          <InputLabel id="demo-customized-select-label">{props.value}</InputLabel>
+          <Select
+            labelId="demo-customized-select-label"
+            id="demo-customized-select"
+            value={avatar}
+            onChange={handleChange}
+            input={<BootstrapInput />}
+          >
+            <MenuItem value={'michel'}>Michel</MenuItem>
+            <MenuItem value={'mike'}>Mike</MenuItem>
+            <MenuItem value={'shelly'}>shelly</MenuItem>
+          </Select>
+        </FormControl>
+      </div>
     </div>
   );
 }
