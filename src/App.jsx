@@ -7,6 +7,7 @@ import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import SimpleCard from './SimpleCard';
 
+
 const useStyles = makeStyles((theme) => ({
   title: {
     ...theme.typography.button,
@@ -39,6 +40,7 @@ export default function App() {
   const [user, setUser] = React.useState('michel');
   const [target, setTarget] = React.useState('michel');
   let message = '';
+  let id = 1;
 
   const handleValidation = (e) => {
     message = e.target.value;
@@ -53,6 +55,19 @@ export default function App() {
 
   const handleSubmit = () => {
     console.log(message);
+    let array = [];
+    let obj = {
+      'User': user,
+      'Target': target,
+      'Message': message,
+      'time': new Date(),
+      'Applause_Sum': 0,
+    };
+    array.push(obj);
+
+    let setjson = JSON.stringify(obj);
+    localStorage.setItem(id++, setjson);
+    //console.log(localStorage.getItem(id-1));
   }
 
   const button = validated ? (

@@ -4,7 +4,8 @@ import Card from '@material-ui/core/Card';
 import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
-import ImageAvatar from './ImageAvatar';
+import Avatar from '@material-ui/core/Avatar';
+
 
 const useStyles = makeStyles({
   root: {
@@ -34,29 +35,40 @@ const useStyles = makeStyles({
 
 export default function SimpleCard() {
   const classes = useStyles();
+  console.log(localStorage.getItem(1));
+  var getjson = localStorage.getItem(1);
+  var obj = JSON.parse(getjson);
+
 
   return (
-    <Card className={classes.root}>
-      <CardContent>
-        <div className={classes.messageArea}>
-          <div className={classes.messageAvatar}>
-            <ImageAvatar />
-            <ImageAvatar />
-          </div>
-        
-          <Typography variant="body2" component="p">
-            well meaning and kindly.
-            <br />
-            {'"a benevolent smile"'}
-          </Typography>
-        </div>
-        <div>
-          <Typography className={classes.time}>2020/05/26 12:10</Typography>
-        </div>
-      </CardContent>
-      <CardActions>
-        <input type="image" src="/static/images/other/applause_icon.png" />
-      </CardActions>
-    </Card>
+    <div>
+      {Object.keys(obj).map((key) => (
+        <Card className={classes.root}>
+          <CardContent>
+            <div className={classes.messageArea}>
+              <div className={classes.messageAvatar}>
+                <Avatar alt="Remy Sharp" src={`/static/images/avatar/${obj['User']}.png`} className={classes.large} />
+                ➡︎
+                <Avatar alt="Remy Sharp" src={`/static/images/avatar/${obj['Target']}.png`} className={classes.large} />
+              </div>
+            
+              <Typography variant="body2" component="p">
+                {obj['Message']}
+                <br />
+              </Typography>
+            </div>
+            <div>
+              <Typography className={classes.time}>
+                {new Date(obj['time']).getFullYear() + "年" + (parseInt(new Date(obj['time']).getMonth(), 10) + 1) + "月" + new Date(obj['time']).getDate() + "日" + new Date(obj['time']).getHours() + "時" + new Date(obj['time']).getMinutes() + "分" + new Date(obj['time']).getSeconds() + "秒"}
+              </Typography>
+            </div>
+          </CardContent>
+          <CardActions>
+            <input type="image" src="/static/images/other/applause_icon.png" />
+            {obj['Applause_Sum']}
+          </CardActions>
+        </Card>
+      ))}
+    </div>
   );
 }
