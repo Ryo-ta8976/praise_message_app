@@ -39,8 +39,8 @@ export default function App() {
   const [validated, setValidated] = React.useState(false);
   const [user, setUser] = React.useState('michel');
   const [target, setTarget] = React.useState('michel');
-  let message = '';
-  let id = 1;
+  let message = ''; 
+  //localStorage.removeItem("message"); 
 
   const handleValidation = (e) => {
     message = e.target.value;
@@ -55,19 +55,35 @@ export default function App() {
 
   const handleSubmit = () => {
     console.log(message);
-    let array = [];
+    const date = new Date();
+    
+    //let array = [];
     let obj = {
-      'User': user,
-      'Target': target,
-      'Message': message,
-      'time': new Date(),
-      'Applause_Sum': 0,
+      [date] : {
+        'User': user,
+        'Target': target,
+        'Message': message,
+        'time': date,
+        'Applause_Sum': 0,
+      }
     };
-    array.push(obj);
+    //setNum(num+1);
+    //array.push(obj);
 
-    let setjson = JSON.stringify(obj);
-    localStorage.setItem(id++, setjson);
-    //console.log(localStorage.getItem(id-1));
+    //let setjson = JSON.stringify(obj);
+
+    if (localStorage.getItem('message') === undefined || localStorage.getItem('message') === null) {
+      let setjson = JSON.stringify(obj);
+      localStorage.setItem('message', setjson);
+    } else {
+      var getjson = localStorage.getItem('message');
+      var obj_before = JSON.parse(getjson);
+      let setjson = Object.assign(obj, obj_before);
+
+      setjson = JSON.stringify(obj);
+      console.log(setjson);
+      localStorage.setItem('message', setjson); 
+    }
   }
 
   const button = validated ? (

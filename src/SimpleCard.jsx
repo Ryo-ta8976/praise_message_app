@@ -35,40 +35,51 @@ const useStyles = makeStyles({
 
 export default function SimpleCard() {
   const classes = useStyles();
-  console.log(localStorage.getItem(1));
-  var getjson = localStorage.getItem(1);
-  var obj = JSON.parse(getjson);
+  var getjson = localStorage.getItem('message');
+  var object = JSON.parse(getjson);
 
+  if (localStorage.getItem('message') === null) {
+    return (
+      <div>
+        Message nothing.
+      </div>
+    );
+  } else {
+    return (
+      <div>
+        {Object.keys(object).map((key) => {
+          var obj = object[key];
 
-  return (
-    <div>
-      {Object.keys(obj).map((key) => (
-        <Card className={classes.root}>
-          <CardContent>
-            <div className={classes.messageArea}>
-              <div className={classes.messageAvatar}>
-                <Avatar alt="Remy Sharp" src={`/static/images/avatar/${obj['User']}.png`} className={classes.large} />
-                ➡︎
-                <Avatar alt="Remy Sharp" src={`/static/images/avatar/${obj['Target']}.png`} className={classes.large} />
-              </div>
-            
-              <Typography variant="body2" component="p">
-                {obj['Message']}
-                <br />
-              </Typography>
-            </div>
-            <div>
-              <Typography className={classes.time}>
-                {new Date(obj['time']).getFullYear() + "年" + (parseInt(new Date(obj['time']).getMonth(), 10) + 1) + "月" + new Date(obj['time']).getDate() + "日" + new Date(obj['time']).getHours() + "時" + new Date(obj['time']).getMinutes() + "分" + new Date(obj['time']).getSeconds() + "秒"}
-              </Typography>
-            </div>
-          </CardContent>
-          <CardActions>
-            <input type="image" src="/static/images/other/applause_icon.png" />
-            {obj['Applause_Sum']}
-          </CardActions>
-        </Card>
-      ))}
-    </div>
-  );
+          return (
+            <Card className={classes.root} key={key}>
+              <CardContent>
+                <div className={classes.messageArea}>
+                  <div className={classes.messageAvatar}>
+                    <Avatar alt="Remy Sharp" src={`/static/images/avatar/${obj['User']}.png`} className={classes.large} />
+                    ➡︎
+                    <Avatar alt="Remy Sharp" src={`/static/images/avatar/${obj['Target']}.png`} className={classes.large} />
+                  </div>
+                
+                  <Typography variant="body2" component="p">
+                    {obj['Message']}
+                    <br />
+                  </Typography>
+                </div>
+                <div>
+                  <Typography className={classes.time}>
+                    {new Date(obj['time']).getFullYear() + "年" + (parseInt(new Date(obj['time']).getMonth(), 10) + 1) + "月" + new Date(obj['time']).getDate() + "日" + new Date(obj['time']).getHours() + "時" + new Date(obj['time']).getMinutes() + "分" + new Date(obj['time']).getSeconds() + "秒"}
+                  </Typography>
+                </div>
+              </CardContent>
+              <CardActions>
+                <input type="image" src="/static/images/other/applause_icon.png" />
+                {obj['Applause_Sum']}
+              </CardActions>
+            </Card>
+          );
+        })}
+      </div>
+    );
+  }
+
 }
