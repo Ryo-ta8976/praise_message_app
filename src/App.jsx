@@ -35,20 +35,6 @@ const useStyles = makeStyles((theme) => ({
 
 
 export default function App() {
-  const classes = useStyles();
-  const [validated, setValidated] = React.useState(false);
-  const [user, setUser] = React.useState('michel');
-  const [target, setTarget] = React.useState('michel');
-
-  var getjson = localStorage.getItem('user');
-  var object = JSON.parse(getjson);
-  const [canApplause, setCanApplause] = React.useState(object[user].canApplause);
-  const [applaused, setApplaused] = React.useState(object[user].applaused);
-  let message = ''; 
-
-  // localStorageデータの削除
-  //localStorage.removeItem("message"); 
-
   // ユーザーデータをlocalStorageに登録
   // let obj = {
   //   'michel' : {
@@ -66,7 +52,23 @@ export default function App() {
   // };
 
   // let setjson = JSON.stringify(obj);
-  //     localStorage.setItem('user', setjson);
+  // localStorage.setItem('user', setjson);
+
+
+  const classes = useStyles();
+  const [validated, setValidated] = React.useState(false);
+  const [user, setUser] = React.useState('michel');
+  const [target, setTarget] = React.useState('michel');
+
+  var getjson = localStorage.getItem('user');
+  var object = JSON.parse(getjson);
+  const [canApplause, setCanApplause] = React.useState(object[user].canApplause);
+  const [applaused, setApplaused] = React.useState(object[user].applaused);
+  let message = ''; 
+
+  // localStorageデータの削除
+  //localStorage.removeItem("message"); 
+  //localStorage.removeItem("user");
 
   const handleValidation = (e) => {
     message = e.target.value;
@@ -89,8 +91,13 @@ export default function App() {
         'User': user,
         'Target': target,
         'Message': message,
-        'time': date,
-        'Applause_Sum': 0,
+        'Time': date,
+        'ApplauseSum': 0,
+        'ApplausePerUser': {
+          'michel': 0,
+          'mike': 0,
+          'shelly': 0,
+        }
       }
     };
     //setNum(num+1);
@@ -163,7 +170,7 @@ export default function App() {
 
       <div>
         <div className={classes.title}>{"History"}</div>
-        <SimpleCard />
+        <SimpleCard value={user}/>
       </div>
     </div>
   );
