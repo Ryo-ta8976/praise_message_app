@@ -89,8 +89,13 @@ export default function App() {
         'User': user,
         'Target': target,
         'Message': message,
-        'time': date,
-        'Applause_Sum': 0,
+        'Time': date,
+        'ApplauseSum': 0,
+        'ApplausePerUser': {
+          'michel': 0,
+          'mike': 0,
+          'shelly': 0,
+        }
       }
     };
     //setNum(num+1);

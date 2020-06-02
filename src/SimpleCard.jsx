@@ -40,7 +40,11 @@ export default function SimpleCard(props) {
 
   const handleClick = (key) => () => {
     console.info("You clicked");
-    object[key].Applause_Sum += 1;
+    // var obj = object[key];
+    // var applausePerUser = obj['ApplausePerUser'];
+    object[key].ApplausePerUser[props.value] += 1;
+    object[key].ApplauseSum += 1;
+    // applausePerUser[props.value] += 1;
     var setjson = JSON.stringify(object);
     localStorage.setItem('message', setjson); 
   };
@@ -57,8 +61,9 @@ export default function SimpleCard(props) {
       <div>
         {Object.keys(object).map((key) => {
           var obj = object[key];
+          var applausePerUser = obj['ApplausePerUser'];
 
-          const button = obj['User'] === props.value || obj['Target'] === props.value ? (
+          const button = obj['User'] === props.value || obj['Target'] === props.value || applausePerUser[props.value] === 15 ? (
             <input type="image" src="/static/images/other/applause_icon.png" disabled/>
           ) : (
             <input type="image" src="/static/images/other/applause_icon.png" onClick={handleClick(key)}/>
@@ -81,13 +86,13 @@ export default function SimpleCard(props) {
                 </div>
                 <div>
                   <Typography className={classes.time}>
-                    {new Date(obj['time']).getFullYear() + "年" + (parseInt(new Date(obj['time']).getMonth(), 10) + 1) + "月" + new Date(obj['time']).getDate() + "日" + new Date(obj['time']).getHours() + "時" + new Date(obj['time']).getMinutes() + "分" + new Date(obj['time']).getSeconds() + "秒"}
+                    {new Date(obj['Time']).getFullYear() + "年" + (parseInt(new Date(obj['Time']).getMonth(), 10) + 1) + "月" + new Date(obj['Time']).getDate() + "日" + new Date(obj['Time']).getHours() + "時" + new Date(obj['Time']).getMinutes() + "分" + new Date(obj['Time']).getSeconds() + "秒"}
                   </Typography>
                 </div>
               </CardContent>
               <CardActions>
                 {button}
-                {obj['Applause_Sum']}
+                {obj['ApplauseSum']}
               </CardActions>
             </Card>
           );
