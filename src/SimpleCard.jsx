@@ -33,7 +33,7 @@ const useStyles = makeStyles({
   }
 });
 
-export default function SimpleCard() {
+export default function SimpleCard(props) {
   const classes = useStyles();
   var getjson = localStorage.getItem('message');
   var object = JSON.parse(getjson);
@@ -58,6 +58,12 @@ export default function SimpleCard() {
         {Object.keys(object).map((key) => {
           var obj = object[key];
 
+          const button = obj['User'] === props.value || obj['Target'] === props.value ? (
+            <input type="image" src="/static/images/other/applause_icon.png" disabled/>
+          ) : (
+            <input type="image" src="/static/images/other/applause_icon.png" onClick={handleClick(key)}/>
+          );
+
           return (
             <Card className={classes.root} key={key}>
               <CardContent>
@@ -80,7 +86,7 @@ export default function SimpleCard() {
                 </div>
               </CardContent>
               <CardActions>
-                <input type="image" src="/static/images/other/applause_icon.png" onClick={handleClick(key)}/>
+                {button}
                 {obj['Applause_Sum']}
               </CardActions>
             </Card>

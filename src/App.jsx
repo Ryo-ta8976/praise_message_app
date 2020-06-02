@@ -163,7 +163,7 @@ export default function App() {
 
       <div>
         <div className={classes.title}>{"History"}</div>
-        <SimpleCard />
+        <SimpleCard value={user}/>
       </div>
     </div>
   );
