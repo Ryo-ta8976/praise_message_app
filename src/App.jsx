@@ -39,8 +39,34 @@ export default function App() {
   const [validated, setValidated] = React.useState(false);
   const [user, setUser] = React.useState('michel');
   const [target, setTarget] = React.useState('michel');
+
+  var getjson = localStorage.getItem('user');
+  var object = JSON.parse(getjson);
+  const [canApplause, setCanApplause] = React.useState(object[user].canApplause);
+  const [applaused, setApplaused] = React.useState(object[user].applaused);
   let message = ''; 
+
+  // localStorageデータの削除
   //localStorage.removeItem("message"); 
+
+  // ユーザーデータをlocalStorageに登録
+  // let obj = {
+  //   'michel' : {
+  //     'canApplause': 100,
+  //     'applaused': 0,
+  //   },
+  //   'mike': {
+  //     'canApplause': 200,
+  //     'applaused': 0,
+  //   },
+  //   'shelly': {
+  //     'canApplause': 300,
+  //     'applaused': 0,
+  //   },
+  // };
+
+  // let setjson = JSON.stringify(obj);
+  //     localStorage.setItem('user', setjson);
 
   const handleValidation = (e) => {
     message = e.target.value;
@@ -102,11 +128,11 @@ export default function App() {
         <div className={classes.title}>{"USER"}</div>
         <div>
           <div className={classes.user}>
-            <SelectUser value='User' onSet={setUser}/>
+            <SelectUser value='User' onSet={setUser} setCanApplause={setCanApplause} setApplaused={setApplaused}/>
           </div>
           <div className={classes.user}>
             <Typography variant="h5" gutterBottom>
-              拍手できる：xx  拍手された：xx
+              拍手できる：{canApplause}  拍手された：{applaused}
             </Typography>
             {user}
             {target}
