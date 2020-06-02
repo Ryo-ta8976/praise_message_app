@@ -67,10 +67,12 @@ export default function CustomizedSelects(props) {
     setAvatar(name);
     props.onSet(name);
 
-    var getjson = localStorage.getItem('user');
-    var object = JSON.parse(getjson);
-    props.setCanApplause(object[name].canApplause);
-    props.setApplaused(object[name].applaused);
+    if (props.value === 'User') {
+      var getjson = localStorage.getItem('user');
+      var object = JSON.parse(getjson);
+      props.setCanApplause(object[name].canApplause);
+      props.setApplaused(object[name].applaused); 
+    }
   };
 
   return (
