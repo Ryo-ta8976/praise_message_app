@@ -35,18 +35,32 @@ const useStyles = makeStyles({
 
 export default function SimpleCard(props) {
   const classes = useStyles();
-  var getjson = localStorage.getItem('message');
-  var object = JSON.parse(getjson);
+  // メッセージJSON
+  var getMessageJson = localStorage.getItem('message');
+  var objectMessage = JSON.parse(getMessageJson);
+
+  // ユーザーJSON
+  var getUserJson = localStorage.getItem('user');
+  var objectUser = JSON.parse(getUserJson);
+
 
   const handleClick = (key) => () => {
     console.info("You clicked");
-    // var obj = object[key];
-    // var applausePerUser = obj['ApplausePerUser'];
-    object[key].ApplausePerUser[props.value] += 1;
-    object[key].ApplauseSum += 1;
-    // applausePerUser[props.value] += 1;
-    var setjson = JSON.stringify(object);
+    
+    // ユーザー別拍手回数カウント
+    objectMessage[key].ApplausePerUser[props.value] += 1;
+    // 拍手総回数カウント
+    objectMessage[key].ApplauseSum += 1;
+    
+    var setjson = JSON.stringify(objectMessage);
     localStorage.setItem('message', setjson); 
+
+    // ユーザー情報更新
+    objectUser[props.value].canApplause -= 2;
+    objectUser[objectMessage[key].User].applaused += 1;
+
+    setjson = JSON.stringify(objectUser);
+    localStorage.setItem('user', setjson); 
   };
 
 
@@ -59,8 +73,8 @@ export default function SimpleCard(props) {
   } else {
     return (
       <div>
-        {Object.keys(object).map((key) => {
-          var obj = object[key];
+        {Object.keys(objectMessage).map((key) => {
+          var obj = objectMessage[key];
           var applausePerUser = obj['ApplausePerUser'];
 
           const button = obj['User'] === props.value || obj['Target'] === props.value || applausePerUser[props.value] === 15 ? (
