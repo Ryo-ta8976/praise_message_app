@@ -1,10 +1,11 @@
 import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
+import { withStyles,makeStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
 import Avatar from '@material-ui/core/Avatar';
+import Tooltip from '@material-ui/core/Tooltip';
 
 
 const useStyles = makeStyles({
@@ -32,6 +33,17 @@ const useStyles = makeStyles({
     float: 'right',
   }
 });
+
+
+const LightTooltip = withStyles((theme) => ({
+  tooltip: {
+    backgroundColor: theme.palette.common.white,
+    color: 'rgba(0, 0, 0, 0.87)',
+    boxShadow: theme.shadows[1],
+    fontSize: 11,
+  },
+}))(Tooltip);
+
 
 export default function SimpleCard(props) {
   const classes = useStyles();
@@ -63,6 +75,36 @@ export default function SimpleCard(props) {
     localStorage.setItem('user', setjson); 
   };
 
+  // 拍手回数一覧取得
+  const getList = (applausePerUser) => {
+    let name = [];
+    let num = [];
+
+    Object.keys(applausePerUser).forEach((key) => {
+      
+      if (num[num.length - 1] < applausePerUser[key]) {
+        var i = 0;
+
+        while (applausePerUser[key] < num[i]) {
+          i++;
+        }
+
+        name.splice(i, 0, key);
+        num.splice(i, 0, applausePerUser[key]);
+      } else {
+        name.push(key);
+        num.push(applausePerUser[key]); 
+      }
+    }, applausePerUser)
+    
+    let list='[拍手一覧]\n';
+
+    for (var i = 0; i < num.length; i++){
+      list = list + name[i] + ':' + num[i] + '\n';
+    }
+
+    return list;
+  };
 
   if (localStorage.getItem('message') === null) {
     return (
@@ -76,11 +118,13 @@ export default function SimpleCard(props) {
         {Object.keys(objectMessage).map((key) => {
           var obj = objectMessage[key];
           var applausePerUser = obj['ApplausePerUser'];
+          
+          const tip = getList(applausePerUser);
 
           const button = obj['User'] === props.value || obj['Target'] === props.value || applausePerUser[props.value] === 15 ? (
             <input type="image" src="/static/images/other/applause_icon.png" disabled/>
           ) : (
-            <input type="image" src="/static/images/other/applause_icon.png" onClick={handleClick(key)}/>
+              <input type="image" src="/static/images/other/applause_icon.png" onClick={handleClick(key)}/>
           );
 
           return (
@@ -105,7 +149,9 @@ export default function SimpleCard(props) {
                 </div>
               </CardContent>
               <CardActions>
-                {button}
+                <LightTooltip title={tip}>
+                  {button}
+                </LightTooltip>
                 {obj['ApplauseSum']}
               </CardActions>
             </Card>
