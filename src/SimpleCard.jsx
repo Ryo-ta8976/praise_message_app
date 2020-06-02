@@ -38,6 +38,14 @@ export default function SimpleCard() {
   var getjson = localStorage.getItem('message');
   var object = JSON.parse(getjson);
 
+  const handleClick = (key) => () => {
+    console.info("You clicked");
+    object[key].Applause_Sum += 1;
+    var setjson = JSON.stringify(object);
+    localStorage.setItem('message', setjson); 
+  };
+
+
   if (localStorage.getItem('message') === null) {
     return (
       <div>
@@ -72,7 +80,7 @@ export default function SimpleCard() {
                 </div>
               </CardContent>
               <CardActions>
-                <input type="image" src="/static/images/other/applause_icon.png" />
+                <input type="image" src="/static/images/other/applause_icon.png" onClick={handleClick(key)}/>
                 {obj['Applause_Sum']}
               </CardActions>
             </Card>
