@@ -71,6 +71,7 @@ export default function SimpleCard(props) {
 
     // ユーザー情報更新
     objectUser[props.value].canApplause -= 2;
+    props.setCanApplause(objectUser[props.value].canApplause);
     objectUser[objectMessage[key].User].applaused += 1;
 
     setjson = JSON.stringify(objectUser);

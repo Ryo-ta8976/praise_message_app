@@ -114,7 +114,6 @@ export default function App() {
       let setjson = Object.assign(obj, obj_before);
 
       setjson = JSON.stringify(obj);
-      console.log(setjson);
       localStorage.setItem('message', setjson); 
     }
     setMessage('');
@@ -170,7 +169,7 @@ export default function App() {
 
       <div>
         <div className={classes.title}>{"History"}</div>
-        <SimpleCard value={user}/>
+        <SimpleCard value={user} setCanApplause={setCanApplause}/>
       </div>
     </div>
   );
