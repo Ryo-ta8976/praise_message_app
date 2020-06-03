@@ -64,16 +64,16 @@ export default function App() {
   var object = JSON.parse(getjson);
   const [canApplause, setCanApplause] = React.useState(object[user].canApplause);
   const [applaused, setApplaused] = React.useState(object[user].applaused);
-  let message = ''; 
+  const [message, setMessage] = React.useState(''); 
 
   // localStorageデータの削除
   //localStorage.removeItem("message"); 
   //localStorage.removeItem("user");
 
   const handleValidation = (e) => {
-    message = e.target.value;
+    setMessage(e.target.value);
   
-    if (message.length < 5) {
+    if (e.target.value.length < 5 || user===target) {
       setValidated(false);
     } else {
       setValidated(true);
@@ -117,6 +117,7 @@ export default function App() {
       console.log(setjson);
       localStorage.setItem('message', setjson); 
     }
+    setMessage('');
   }
 
   const button = validated ? (
@@ -141,8 +142,6 @@ export default function App() {
             <Typography variant="h5" gutterBottom>
               拍手できる：{canApplause}  拍手された：{applaused}
             </Typography>
-            {user}
-            {target}
           </div>
         </div>
       </div>
@@ -162,6 +161,7 @@ export default function App() {
               rows={4}
               variant="outlined"
               onChange={handleValidation}
+              value={message}
             />
             {button}
           </form>

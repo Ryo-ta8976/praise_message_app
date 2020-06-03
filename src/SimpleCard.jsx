@@ -47,6 +47,8 @@ const LightTooltip = withStyles((theme) => ({
 
 export default function SimpleCard(props) {
   const classes = useStyles();
+  //const [tip, setTip] = React.useState();
+
   // メッセージJSON
   var getMessageJson = localStorage.getItem('message');
   var objectMessage = JSON.parse(getMessageJson);
