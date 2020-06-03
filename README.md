@@ -1,5 +1,6 @@
 ### 起動手順
 ```
+git clone git@github.com:Ryo-ta8976/praise_message_app.git
 cd praise_message_app
 npm i
 npm start
