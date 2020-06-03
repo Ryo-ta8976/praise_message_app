@@ -15,22 +15,21 @@ const useStyles = makeStyles((theme) => ({
     padding: theme.spacing(1),
   },
   user: {
-    //float: 'left',
     display: 'inline-block',
+    margin: '20px',
   },
   userArea: {
     display: 'block',
     backgroundColor: blue[100],
   },
-  root: {
-    //display: 'block',
-  },
   submitArea: {
-    //display: 'block',
+    display: 'block',
   },
   messageArea: {
     display: 'inline-block',
-  }
+    verticalAlign: 'top',
+    padding: '10px',
+  },
 }));
 
 
@@ -100,10 +99,6 @@ export default function App() {
         }
       }
     };
-    //setNum(num+1);
-    //array.push(obj);
-
-    //let setjson = JSON.stringify(obj);
 
     if (localStorage.getItem('message') === undefined || localStorage.getItem('message') === null) {
       let setjson = JSON.stringify(obj);
@@ -139,7 +134,7 @@ export default function App() {
           </div>
           <div className={classes.user}>
             <Typography variant="h5" gutterBottom>
-              拍手できる：{canApplause}  拍手された：{applaused}
+              拍手できる：{canApplause} / 拍手された：{applaused}
             </Typography>
           </div>
         </div>
@@ -152,18 +147,17 @@ export default function App() {
           <SelectUser value='Target' onSet={setTarget}/>
         </div>
         <div className={classes.messageArea}>
-          <form noValidate autoComplete="off">
-            <TextField
-              id="outlined-multiline-static"
-              label="Message"
-              multiline
-              rows={4}
-              variant="outlined"
-              onChange={handleValidation}
-              value={message}
+          <TextField
+            id="outlined-multiline-static"
+            label="Message"
+            multiline
+            rows={4}
+            variant="outlined"
+            onChange={handleValidation}
+            value={message}
+            fullWidth
             />
-            {button}
-          </form>
+          {button}
         </div>
       </div>
 

@@ -31,6 +31,9 @@ const useStyles = makeStyles({
   },
   time: {
     float: 'right',
+  },
+  message: {
+    padding: '15px',
   }
 });
 
@@ -124,7 +127,7 @@ export default function SimpleCard(props) {
           
           const tip = getList(applausePerUser);
 
-          const button = obj['User'] === props.value || obj['Target'] === props.value || applausePerUser[props.value] === 15 ? (
+          const button = obj['User'] === props.value || obj['Target'] === props.value || applausePerUser[props.value] === 15 || objectUser[props.value].canApplause === 0 ? (
             <input type="image" src="/static/images/other/applause_icon.png" disabled/>
           ) : (
               <input type="image" src="/static/images/other/applause_icon.png" onClick={handleClick(key)}/>
@@ -140,10 +143,12 @@ export default function SimpleCard(props) {
                     <Avatar alt="Remy Sharp" src={`/static/images/avatar/${obj['Target']}.png`} className={classes.large} />
                   </div>
                 
-                  <Typography variant="body2" component="p">
-                    {obj['Message']}
-                    <br />
-                  </Typography>
+                  <div className={classes.message}>
+                    <Typography variant="h6" component="p">
+                      {obj['Message']}
+                      <br />
+                    </Typography>
+                  </div>
                 </div>
                 <div>
                   <Typography className={classes.time}>
