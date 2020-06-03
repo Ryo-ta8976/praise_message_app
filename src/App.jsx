@@ -15,65 +15,73 @@ const useStyles = makeStyles((theme) => ({
     padding: theme.spacing(1),
   },
   user: {
-    //float: 'left',
     display: 'inline-block',
+    margin: '20px',
   },
   userArea: {
     display: 'block',
     backgroundColor: blue[100],
   },
-  root: {
-    //display: 'block',
-  },
   submitArea: {
-    //display: 'block',
+    display: 'block',
   },
   messageArea: {
     display: 'inline-block',
-  }
+    verticalAlign: 'top',
+    padding: '10px',
+  },
 }));
 
 
 export default function App() {
-  // ユーザーデータをlocalStorageに登録
-  // let obj = {
-  //   'michel' : {
-  //     'canApplause': 100,
-  //     'applaused': 0,
-  //   },
-  //   'mike': {
-  //     'canApplause': 200,
-  //     'applaused': 0,
-  //   },
-  //   'shelly': {
-  //     'canApplause': 300,
-  //     'applaused': 0,
-  //   },
-  // };
+  // localStorageにユーザーデータがない場合に登録
+  if (localStorage.getItem('user')===null) {
+  let obj = {
+    'michel' : {
+      'canApplause': 100,
+      'applaused': 0,
+    },
+    'mike': {
+      'canApplause': 100,
+      'applaused': 0,
+    },
+    'shelly': {
+      'canApplause': 100,
+      'applaused': 0,
+    },
+  };
 
-  // let setjson = JSON.stringify(obj);
-  // localStorage.setItem('user', setjson);
-
+  let setjson = JSON.stringify(obj);
+  localStorage.setItem('user', setjson); 
+  }
 
   const classes = useStyles();
+  // バリデーションstate
   const [validated, setValidated] = React.useState(false);
+  // ユーザーstate
   const [user, setUser] = React.useState('michel');
+  // 対象state
   const [target, setTarget] = React.useState('michel');
 
+  // ユーザー情報の取り出し
   var getjson = localStorage.getItem('user');
   var object = JSON.parse(getjson);
+  // 拍手できる回数state
   const [canApplause, setCanApplause] = React.useState(object[user].canApplause);
+  // 拍手された回数state
   const [applaused, setApplaused] = React.useState(object[user].applaused);
-  let message = ''; 
+  // テキストメッセージstate
+  const [message, setMessage] = React.useState(''); 
 
   // localStorageデータの削除
   //localStorage.removeItem("message"); 
   //localStorage.removeItem("user");
 
+  // テキストのバリデーション
   const handleValidation = (e) => {
-    message = e.target.value;
+    setMessage(e.target.value);
   
-    if (message.length < 5) {
+    if (e.target.value.length < 5 || user===target) {
       setValidated(false);
     } else {
       setValidated(true);
@@ -81,11 +89,12 @@ export default function App() {
     }
   };
 
+  // 投稿ボタンクリック時
   const handleSubmit = () => {
     console.log(message);
     const date = new Date();
     
-    //let array = [];
+    // jsonデータの生成
     let obj = {
       [date] : {
         'User': user,
@@ -100,11 +109,8 @@ export default function App() {
         }
       }
     };
-    //setNum(num+1);
-    //array.push(obj);
 
-    //let setjson = JSON.stringify(obj);
-
+    // localStorageに既存のデータがあるかどうか
     if (localStorage.getItem('message') === undefined || localStorage.getItem('message') === null) {
       let setjson = JSON.stringify(obj);
       localStorage.setItem('message', setjson);
@@ -114,9 +120,9 @@ export default function App() {
       let setjson = Object.assign(obj, obj_before);
 
       setjson = JSON.stringify(obj);
-      console.log(setjson);
       localStorage.setItem('message', setjson); 
     }
+    setMessage('');
   }
 
   const button = validated ? (
@@ -139,10 +145,8 @@ export default function App() {
           </div>
           <div className={classes.user}>
             <Typography variant="h5" gutterBottom>
-              拍手できる：{canApplause}  拍手された：{applaused}
+              拍手できる：{canApplause} / 拍手された：{applaused}
             </Typography>
-            {user}
-            {target}
           </div>
         </div>
       </div>
@@ -154,23 +158,23 @@ export default function App() {
           <SelectUser value='Target' onSet={setTarget}/>
         </div>
         <div className={classes.messageArea}>
-          <form noValidate autoComplete="off">
-            <TextField
-              id="outlined-multiline-static"
-              label="Message"
-              multiline
-              rows={4}
-              variant="outlined"
-              onChange={handleValidation}
+          <TextField
+            id="outlined-multiline-static"
+            label="Message"
+            multiline
+            rows={4}
+            variant="outlined"
+            onChange={handleValidation}
+            value={message}
+            fullWidth
             />
-            {button}
-          </form>
+          {button}
         </div>
       </div>
 
       <div>
         <div className={classes.title}>{"History"}</div>
-        <SimpleCard value={user}/>
+        <SimpleCard value={user} setCanApplause={setCanApplause}/>
       </div>
     </div>
   );

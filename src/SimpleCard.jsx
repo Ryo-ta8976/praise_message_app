@@ -31,6 +31,9 @@ const useStyles = makeStyles({
   },
   time: {
     float: 'right',
+  },
+  message: {
+    padding: '15px',
   }
 });
 
@@ -47,6 +50,7 @@ const LightTooltip = withStyles((theme) => ({
 
 export default function SimpleCard(props) {
   const classes = useStyles();
+
   // メッセージJSON
   var getMessageJson = localStorage.getItem('message');
   var objectMessage = JSON.parse(getMessageJson);
@@ -56,6 +60,7 @@ export default function SimpleCard(props) {
   var objectUser = JSON.parse(getUserJson);
 
 
+  // 拍手ボタンクリック時
   const handleClick = (key) => () => {
     console.info("You clicked");
     
@@ -69,6 +74,7 @@ export default function SimpleCard(props) {
 
     // ユーザー情報更新
     objectUser[props.value].canApplause -= 2;
+    props.setCanApplause(objectUser[props.value].canApplause);
     objectUser[objectMessage[key].User].applaused += 1;
 
     setjson = JSON.stringify(objectUser);
@@ -121,7 +127,7 @@ export default function SimpleCard(props) {
           
           const tip = getList(applausePerUser);
 
-          const button = obj['User'] === props.value || obj['Target'] === props.value || applausePerUser[props.value] === 15 ? (
+          const button = obj['User'] === props.value || obj['Target'] === props.value || applausePerUser[props.value] === 15 || objectUser[props.value].canApplause === 0 ? (
             <input type="image" src="/static/images/other/applause_icon.png" disabled/>
           ) : (
               <input type="image" src="/static/images/other/applause_icon.png" onClick={handleClick(key)}/>
@@ -137,10 +143,12 @@ export default function SimpleCard(props) {
                     <Avatar alt="Remy Sharp" src={`/static/images/avatar/${obj['Target']}.png`} className={classes.large} />
                   </div>
                 
-                  <Typography variant="body2" component="p">
-                    {obj['Message']}
-                    <br />
-                  </Typography>
+                  <div className={classes.message}>
+                    <Typography variant="h6" component="p">
+                      {obj['Message']}
+                      <br />
+                    </Typography>
+                  </div>
                 </div>
                 <div>
                   <Typography className={classes.time}>

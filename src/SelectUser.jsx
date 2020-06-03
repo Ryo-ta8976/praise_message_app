@@ -62,6 +62,7 @@ export default function CustomizedSelects(props) {
   const classes = useStyles();
   const [avatar, setAvatar] = React.useState('michel');
 
+  // プルダウンメニュー変更時
   const handleChange = (event) => {
     const name = event.target.value;
     setAvatar(name);
