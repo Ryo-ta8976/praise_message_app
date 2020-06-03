@@ -50,7 +50,6 @@ const LightTooltip = withStyles((theme) => ({
 
 export default function SimpleCard(props) {
   const classes = useStyles();
-  //const [tip, setTip] = React.useState();
 
   // メッセージJSON
   var getMessageJson = localStorage.getItem('message');
@@ -61,6 +60,7 @@ export default function SimpleCard(props) {
   var objectUser = JSON.parse(getUserJson);
 
 
+  // 拍手ボタンクリック時
   const handleClick = (key) => () => {
     console.info("You clicked");
     

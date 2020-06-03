@@ -34,41 +34,50 @@ const useStyles = makeStyles((theme) => ({
 
 
 export default function App() {
-  // ユーザーデータをlocalStorageに登録
-  // let obj = {
-  //   'michel' : {
-  //     'canApplause': 100,
-  //     'applaused': 0,
-  //   },
-  //   'mike': {
-  //     'canApplause': 200,
-  //     'applaused': 0,
-  //   },
-  //   'shelly': {
-  //     'canApplause': 300,
-  //     'applaused': 0,
-  //   },
-  // };
+  // localStorageにユーザーデータがない場合に登録
+  if (localStorage.getItem('user')===null) {
+  let obj = {
+    'michel' : {
+      'canApplause': 100,
+      'applaused': 0,
+    },
+    'mike': {
+      'canApplause': 100,
+      'applaused': 0,
+    },
+    'shelly': {
+      'canApplause': 100,
+      'applaused': 0,
+    },
+  };
 
-  // let setjson = JSON.stringify(obj);
-  // localStorage.setItem('user', setjson);
-
+  let setjson = JSON.stringify(obj);
+  localStorage.setItem('user', setjson); 
+  }
 
   const classes = useStyles();
+  // バリデーションstate
   const [validated, setValidated] = React.useState(false);
+  // ユーザーstate
   const [user, setUser] = React.useState('michel');
+  // 対象state
   const [target, setTarget] = React.useState('michel');
 
+  // ユーザー情報の取り出し
   var getjson = localStorage.getItem('user');
   var object = JSON.parse(getjson);
+  // 拍手できる回数state
   const [canApplause, setCanApplause] = React.useState(object[user].canApplause);
+  // 拍手された回数state
   const [applaused, setApplaused] = React.useState(object[user].applaused);
+  // テキストメッセージstate
   const [message, setMessage] = React.useState(''); 
 
   // localStorageデータの削除
   //localStorage.removeItem("message"); 
   //localStorage.removeItem("user");
 
+  // テキストのバリデーション
   const handleValidation = (e) => {
     setMessage(e.target.value);
   
@@ -80,11 +89,12 @@ export default function App() {
     }
   };
 
+  // 投稿ボタンクリック時
   const handleSubmit = () => {
     console.log(message);
     const date = new Date();
     
-    //let array = [];
+    // jsonデータの生成
     let obj = {
       [date] : {
         'User': user,
@@ -100,6 +110,7 @@ export default function App() {
       }
     };
 
+    // localStorageに既存のデータがあるかどうか
     if (localStorage.getItem('message') === undefined || localStorage.getItem('message') === null) {
       let setjson = JSON.stringify(obj);
       localStorage.setItem('message', setjson);
