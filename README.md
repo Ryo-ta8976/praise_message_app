@@ -1,4 +1,4 @@
-##他人賞賛アプリ
+## 他人賞賛アプリ
 
 ### デプロイ
 https://boiling-meadow-17941.herokuapp.com/
